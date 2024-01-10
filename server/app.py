@@ -45,5 +45,16 @@ def most_expensive_baked_good():
     most_expensive_serialized = most_expensive.to_dict()
     return make_response( most_expensive_serialized,   200  )
 
+@app.route('/baked_goods/<int:id>', methods=["DELETE"])
+def delete_id(id):
+    delete_baked_goods = BakedGood.query.filter(BakedGood.id==id).first()
+    db.session.delete(delete_baked_goods)
+    db.session.commit()
+
+    response_body = {"message": "Record was successfully deleted"}
+
+    response = make_response(response_body, 200)
+    return response
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
